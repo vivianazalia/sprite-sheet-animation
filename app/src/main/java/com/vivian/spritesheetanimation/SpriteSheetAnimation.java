@@ -44,12 +44,12 @@ public class SpriteSheetAnimation extends Activity {
         long fps;
         private long timeThisFrame;
 
-        Bitmap bitmapBob;
-        Bitmap bitmapBobFlip;
+        Bitmap bitmap;
+        Bitmap bitmapFlip;
 
         boolean isMoving = false;
         float walkSpeedPerSecond = 150;
-        float bobXPosition = 10;
+        float charXPosition = 10;
 
         int xMaxPosition;
         int xMinPosition = 0;
@@ -65,7 +65,7 @@ public class SpriteSheetAnimation extends Activity {
 
         private Rect frameToDraw = new Rect(0, 0, frameWidth, frameHeight);
 
-        RectF whereToDraw = new RectF(bobXPosition, 0, bobXPosition + frameWidth, frameHeight);
+        RectF whereToDraw = new RectF(charXPosition, 0, charXPosition + frameWidth, frameHeight);
 
         public GameView(Context context) {
             super(context);
@@ -77,10 +77,10 @@ public class SpriteSheetAnimation extends Activity {
             ourHolder = getHolder();
             paint = new Paint();
 
-            bitmapBob = BitmapFactory.decodeResource(this.getResources(), R.drawable.walk);
+            bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.walk);
 
-            bitmapBob = Bitmap.createScaledBitmap(bitmapBob, frameWidth * frameCount, frameHeight, false);
-            bitmapBobFlip = Bitmap.createScaledBitmap(bitmapBob, -frameWidth * frameCount, frameHeight, false);
+            bitmap = Bitmap.createScaledBitmap(bitmap, frameWidth * frameCount, frameHeight, false);
+            bitmapFlip = Bitmap.createScaledBitmap(bitmap, -frameWidth * frameCount, frameHeight, false);
 
             xMaxPosition = getResources().getDisplayMetrics().widthPixels - frameWidth;
 
@@ -115,17 +115,17 @@ public class SpriteSheetAnimation extends Activity {
 
                 canvas.drawText("FPS : " + fps, 20, 40, paint);
 
-                whereToDraw.set((int) bobXPosition, 70, (int) bobXPosition + frameWidth, frameHeight + 70);
+                whereToDraw.set((int) charXPosition, 70, (int) charXPosition + frameWidth, frameHeight + 70);
 
                 getCurrentFrame();
 
                 //untuk flip karakter
                 if (!bound)
                 {
-                    canvas.drawBitmap(bitmapBob, frameToDraw, whereToDraw, paint);
+                    canvas.drawBitmap(bitmap, frameToDraw, whereToDraw, paint);
                 } else
                 {
-                    canvas.drawBitmap(bitmapBobFlip, frameToDraw, whereToDraw, paint);
+                    canvas.drawBitmap(bitmapFlip, frameToDraw, whereToDraw, paint);
                 }
 
                 ourHolder.unlockCanvasAndPost(canvas);
@@ -134,14 +134,14 @@ public class SpriteSheetAnimation extends Activity {
 
         public void update() {
             if (isMoving) {
-                if ((bobXPosition < xMaxPosition) & !bound) {
-                    bobXPosition = bobXPosition + (walkSpeedPerSecond / fps);
-                    if (bobXPosition >= xMaxPosition) {
+                if ((charXPosition < xMaxPosition) & !bound) {
+                    charXPosition= charXPosition + (walkSpeedPerSecond / fps);
+                    if (charXPosition >= xMaxPosition) {
                         bound = true;
                     }
-                } else if ((bobXPosition > xMinPosition) & bound) {
-                    bobXPosition = bobXPosition - (walkSpeedPerSecond / fps);
-                    if (bobXPosition <= xMinPosition) {
+                } else if ((charXPosition > xMinPosition) & bound) {
+                    charXPosition = charXPosition - (walkSpeedPerSecond / fps);
+                    if (charXPosition <= xMinPosition) {
                         bound = false;
                     }
                 }
